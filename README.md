@@ -1,6 +1,6 @@
 ## About
 
-This is a simple Pong clone built while in college a while ago in C# using Monogame. It was a fun little project to experiment with for the most part, though I found working with Visual Studio to be somewhat problematic.
+Simple Pong clone that I built back at college in C# using Monogame. It was a fun little project to experiment with for the most part, though I found working with Visual Studio to be somewhat problematic.
 
 ## Demo
 
