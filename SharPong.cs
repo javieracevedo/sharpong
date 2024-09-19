@@ -61,22 +61,22 @@ namespace SharPong
 
         // Score Text 
         private SpriteFont scoreFont;
-		private SpriteFont startScreenFont;
-		private SpriteFont startScreenFontSmall;
-		private bool playerOneWon;
-		private bool playerTwoWon;
-		private int winningScore;
+        private SpriteFont startScreenFont;
+        private SpriteFont startScreenFontSmall;
+        private bool playerOneWon;
+        private bool playerTwoWon;
+        private int winningScore;
 
 
         // Title Screen
 
-		private String pongTitle;
-		private String pressStart;
-        
+        private String pongTitle;
+        private String pressStart;
+
         private int playerOneScore;
         private int playerTwoScore;
 
-		private bool gameStarted = false;
+        private bool gameStarted = false;
 
 
         // Flags
@@ -85,7 +85,6 @@ namespace SharPong
 
         static void Main(string[] args)
         {
-            // Your game logic here
         }
 
 
@@ -130,11 +129,11 @@ namespace SharPong
 
             // Ball init
             ballPosition = new Vector2(500, 500);
-			ballWidth = (int)(SCREEN_WIDTH * 0.025);
-			ballHeight = (int)(SCREEN_WIDTH * 0.025);
+            ballWidth = (int)(SCREEN_WIDTH * 0.025);
+            ballHeight = (int)(SCREEN_WIDTH * 0.025);
             ballSpeed = 700f;
             ballVx = ballSpeed * Math.Cos(maxBounceAngle);
-			ballVy = ballSpeed * -Math.Sin(maxBounceAngle);
+            ballVy = ballSpeed * -Math.Sin(maxBounceAngle);
             ballRect = new Rectangle((int)ballPosition.X, (int)ballPosition.Y, ballWidth, ballHeight);
             maxBounceAngle = 3 * Math.PI / 12;
             bounceAngle = 0;
@@ -144,13 +143,13 @@ namespace SharPong
             // Score 
             playerOneScore = 0;
             playerTwoScore = 0;
-			winningScore = 15;
-			playerOneWon = false;
-			playerTwoWon = false;
+            winningScore = 15;
+            playerOneWon = false;
+            playerTwoWon = false;
 
-			// Start screen
-			pongTitle = "PONG";
-			pressStart = "Press Space";
+            // Start screen
+            pongTitle = "PONG";
+            pressStart = "Press Space";
 
 
             base.Initialize();
@@ -182,9 +181,8 @@ namespace SharPong
             // hbrenes@gmail.com
             // Sprite Font
             scoreFont = Content.Load<SpriteFont>("Score");
-			startScreenFont = Content.Load<SpriteFont>("StartScreen");
-			startScreenFontSmall = Content.Load<SpriteFont>("StartScreenSmall");
-
+            startScreenFont = Content.Load<SpriteFont>("StartScreen");
+            startScreenFontSmall = Content.Load<SpriteFont>("StartScreenSmall");
         }
 
         protected override void UnloadContent()
@@ -197,141 +195,141 @@ namespace SharPong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-			var kstate = Keyboard.GetState();
+            var kstate = Keyboard.GetState();
 
-			if (kstate.IsKeyDown(Keys.Space) && !gameStarted)
+            if (kstate.IsKeyDown(Keys.Space) && !gameStarted)
                 gameStarted = true;
 
-			if (gameStarted && !playerOneWon && !playerTwoWon)
-			{
-				paddleTwoRect.Y = (int)paddleTwoPosition.Y;
+            if (gameStarted && !playerOneWon && !playerTwoWon)
+            {
+                paddleTwoRect.Y = (int)paddleTwoPosition.Y;
 
 
-				// Move Paddle 1
-				if (kstate.IsKeyDown(Keys.W) && paddleOnePosition.Y > horizontalLineHeight)
-					paddleOnePosition.Y -= (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                // Move Paddle 1
+                if (kstate.IsKeyDown(Keys.W) && paddleOnePosition.Y > horizontalLineHeight)
+                    paddleOnePosition.Y -= (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
 
-				if (kstate.IsKeyDown(Keys.S) && paddleOnePosition.Y < (SCREEN_HEIGHT - paddle_height) - horizontalLineHeight)
-					paddleOnePosition.Y += (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                if (kstate.IsKeyDown(Keys.S) && paddleOnePosition.Y < (SCREEN_HEIGHT - paddle_height) - horizontalLineHeight)
+                    paddleOnePosition.Y += (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-				paddleOneRect.Y = (int)paddleOnePosition.Y;
+                paddleOneRect.Y = (int)paddleOnePosition.Y;
 
-				// Move Paddle 2
-				if (kstate.IsKeyDown(Keys.Up) && paddleTwoPosition.Y > horizontalLineHeight)
-					paddleTwoPosition.Y -= (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                // Move Paddle 2
+                if (kstate.IsKeyDown(Keys.Up) && paddleTwoPosition.Y > horizontalLineHeight)
+                    paddleTwoPosition.Y -= (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-				if (kstate.IsKeyDown(Keys.Down) && paddleTwoPosition.Y < (SCREEN_HEIGHT - paddle_height) - horizontalLineHeight)
-					paddleTwoPosition.Y += (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-
-
-
-				ballVx = ballSpeed * Math.Cos(bounceAngle) * ballDirection;
-				ballVy = ballSpeed * -Math.Sin(bounceAngle) * ballDirection;
+                if (kstate.IsKeyDown(Keys.Down) && paddleTwoPosition.Y < (SCREEN_HEIGHT - paddle_height) - horizontalLineHeight)
+                    paddleTwoPosition.Y += (int)(paddleSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
 
-				// Move Ball/ballrect : test
-				ballPosition.X += (int)(ballVx * (float)gameTime.ElapsedGameTime.TotalSeconds);
-				ballPosition.Y += (int)(ballVy * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-				ballRect.X = (int)ballPosition.X;
-				ballRect.Y = (int)ballPosition.Y;
+                ballVx = ballSpeed * Math.Cos(bounceAngle) * ballDirection;
+                ballVy = ballSpeed * -Math.Sin(bounceAngle) * ballDirection;
 
 
-				bool collidesPaddleTwo = CheckCollision(ballRect, paddleTwoRect);
-				bool collidesPaddleOne = CheckCollision(ballRect, paddleOneRect);
-				bool collidesHorizontalTop = CheckCollision(ballRect, horizontalLineTopRect);
-				bool collidesHorizontalBot = CheckCollision(ballRect, horizontalLineBottomRect);
+                // Move Ball/ballrect : test
+                ballPosition.X += (int)(ballVx * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                ballPosition.Y += (int)(ballVy * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-				if (collidesPaddleOne)
-				{
-					ballDirection = 1;
-					int relativeCollision = ballRect.Y - paddleOneRect.Y;
-
-					if (relativeCollision <= (paddle_height / 2) && relativeCollision > 0)
-					{
-						bounceAngle = maxBounceAngle * 1;
-					}
-					else if (relativeCollision >= paddle_height - (paddle_height / 2) && relativeCollision < paddle_height)
-					{
-						bounceAngle = maxBounceAngle * -1;
-					}
-					else if (relativeCollision < 0)
-					{
-						bounceAngle = maxBounceAngle * 1;
-						ballSpeed += 200f;
-					}
-					else if (relativeCollision > paddle_height)
-					{
-						bounceAngle = maxBounceAngle * -1;
-						ballSpeed += 200f;
-					}
-					else
-					{
-						bounceAngle = 0;
-					}
-				}
-				else if (collidesPaddleTwo)
-				{
-
-					ballDirection = -1;
-					int relativeCollision = ballRect.Y - paddleTwoRect.Y;
-
-					if (relativeCollision <= (paddle_height / 2) && relativeCollision > 0)
-					{
-						bounceAngle = maxBounceAngle * -1;
-					}
-					else if (relativeCollision >= paddle_height - (paddle_height / 2) && relativeCollision < paddle_height)
-					{
-						bounceAngle = maxBounceAngle * 1;
-					}
-					else if (relativeCollision < 0)
-					{
-						bounceAngle = maxBounceAngle * -1;
-						ballSpeed += 200f;
-					}
-					else if (relativeCollision > paddle_height)
-					{
-						bounceAngle = maxBounceAngle * 1;
-						ballSpeed += 200f;
-					}
-					else
-					{
-						bounceAngle = 0;
-					}
-				}
-				else if (collidesHorizontalTop || collidesHorizontalBot)
-				{
-					bounceAngle = bounceAngle * -1;
-				}
-
-				// Reset ball position if it's out of the window and depending on the side
-				// that the ball went out update player one or player two score.
-				if (ballPosition.X > SCREEN_WIDTH)
-				{
-					ResetBall(1);
-					playerOneScore += 1;
-				}
-				else if (ballPosition.X < 0)
-				{
-					// Player Two Score +1
-					ResetBall(-1);
-					playerTwoScore += 1;
-				}
+                ballRect.X = (int)ballPosition.X;
+                ballRect.Y = (int)ballPosition.Y;
 
 
-				// Check for winning condition
-				if (playerOneScore >= winningScore)
-				{
-					playerOneWon = true;
-				}
-				else if (playerTwoScore >= winningScore)
-				{
-					playerTwoWon = true;
-				}
-			}
-            
-                    
+                bool collidesPaddleTwo = CheckCollision(ballRect, paddleTwoRect);
+                bool collidesPaddleOne = CheckCollision(ballRect, paddleOneRect);
+                bool collidesHorizontalTop = CheckCollision(ballRect, horizontalLineTopRect);
+                bool collidesHorizontalBot = CheckCollision(ballRect, horizontalLineBottomRect);
+
+                if (collidesPaddleOne)
+                {
+                    ballDirection = 1;
+                    int relativeCollision = ballRect.Y - paddleOneRect.Y;
+
+                    if (relativeCollision <= (paddle_height / 2) && relativeCollision > 0)
+                    {
+                        bounceAngle = maxBounceAngle * 1;
+                    }
+                    else if (relativeCollision >= paddle_height - (paddle_height / 2) && relativeCollision < paddle_height)
+                    {
+                        bounceAngle = maxBounceAngle * -1;
+                    }
+                    else if (relativeCollision < 0)
+                    {
+                        bounceAngle = maxBounceAngle * 1;
+                        ballSpeed += 200f;
+                    }
+                    else if (relativeCollision > paddle_height)
+                    {
+                        bounceAngle = maxBounceAngle * -1;
+                        ballSpeed += 200f;
+                    }
+                    else
+                    {
+                        bounceAngle = 0;
+                    }
+                }
+                else if (collidesPaddleTwo)
+                {
+
+                    ballDirection = -1;
+                    int relativeCollision = ballRect.Y - paddleTwoRect.Y;
+
+                    if (relativeCollision <= (paddle_height / 2) && relativeCollision > 0)
+                    {
+                        bounceAngle = maxBounceAngle * -1;
+                    }
+                    else if (relativeCollision >= paddle_height - (paddle_height / 2) && relativeCollision < paddle_height)
+                    {
+                        bounceAngle = maxBounceAngle * 1;
+                    }
+                    else if (relativeCollision < 0)
+                    {
+                        bounceAngle = maxBounceAngle * -1;
+                        ballSpeed += 200f;
+                    }
+                    else if (relativeCollision > paddle_height)
+                    {
+                        bounceAngle = maxBounceAngle * 1;
+                        ballSpeed += 200f;
+                    }
+                    else
+                    {
+                        bounceAngle = 0;
+                    }
+                }
+                else if (collidesHorizontalTop || collidesHorizontalBot)
+                {
+                    bounceAngle = bounceAngle * -1;
+                }
+
+                // Reset ball position if it's out of the window and depending on the side
+                // that the ball went out update player one or player two score.
+                if (ballPosition.X > SCREEN_WIDTH)
+                {
+                    ResetBall(1);
+                    playerOneScore += 1;
+                }
+                else if (ballPosition.X < 0)
+                {
+                    // Player Two Score +1
+                    ResetBall(-1);
+                    playerTwoScore += 1;
+                }
+
+
+                // Check for winning condition
+                if (playerOneScore >= winningScore)
+                {
+                    playerOneWon = true;
+                }
+                else if (playerTwoScore >= winningScore)
+                {
+                    playerTwoWon = true;
+                }
+            }
+
+        
             base.Update(gameTime);
         }
 
@@ -341,12 +339,11 @@ namespace SharPong
 
             spriteBatch.Begin();
 
-			if (gameStarted){
-				DrawMainGame();
-			}else {
-				DrawStartScreen();
-			}
-            
+            if (gameStarted){
+                DrawMainGame();
+            }else {
+                DrawStartScreen();
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -373,14 +370,14 @@ namespace SharPong
             ballSpeed = 700f;
         }
 
-		private void DrawStartScreen() {
-			spriteBatch.DrawString(startScreenFont, pongTitle, new Vector2((SCREEN_WIDTH/2) - startScreenFont.MeasureString(pongTitle).X / 2, 100), Color.White);
-			spriteBatch.DrawString(startScreenFontSmall, pressStart, new Vector2((SCREEN_WIDTH / 2) - startScreenFontSmall.MeasureString(pressStart).X / 2, 250), Color.White);
-		}
+        private void DrawStartScreen() {
+            spriteBatch.DrawString(startScreenFont, pongTitle, new Vector2((SCREEN_WIDTH/2) - startScreenFont.MeasureString(pongTitle).X / 2, 100), Color.White);
+            spriteBatch.DrawString(startScreenFontSmall, pressStart, new Vector2((SCREEN_WIDTH / 2) - startScreenFontSmall.MeasureString(pressStart).X / 2, 250), Color.White);
+        }
 
-		private void DrawMainGame(){
+        private void DrawMainGame(){
 
-			// Draw left/right paddles 
+            // Draw left/right paddles 
             Color[] data = new Color[paddle_width * paddle_height];
             for (int i = 0; i < data.Length; ++i) data[i] = Color.White;
             paddle_one.SetData(data);
@@ -420,9 +417,9 @@ namespace SharPong
 
 
             // Draw both player scores
-			spriteBatch.DrawString(scoreFont, playerOneScore.ToString(), new Vector2((int)(((SCREEN_WIDTH * 0.45) - scoreFont.MeasureString(playerOneScore.ToString()).X)), 100), Color.White);
+            spriteBatch.DrawString(scoreFont, playerOneScore.ToString(), new Vector2((int)(((SCREEN_WIDTH * 0.45) - scoreFont.MeasureString(playerOneScore.ToString()).X)), 100), Color.White);
             spriteBatch.DrawString(scoreFont, playerTwoScore.ToString(), new Vector2((int)(SCREEN_WIDTH * 0.55), 100), Color.White);			
-		}
+        }
 
     }
 }
