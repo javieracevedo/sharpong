@@ -8,7 +8,7 @@ _If you wish to run the game follow the instructions for your platform in the [m
 
 Anyway, here’s the game in action:
 
-![Image of the pong game.](./pong.png)
+![Image of the pong game.](./pong.gif)
 
 
 
